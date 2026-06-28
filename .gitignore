@@ -1,0 +1,15 @@
+# Streamlit config and caches
+.streamlit/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+# Local data (Exclude raw CSVs from git push)
+data/online_retail_cleaned.csv
+data/online_retail.csv
+data/*.csv
+
+# Virtual environments
+venv/
+.venv/
+env/
