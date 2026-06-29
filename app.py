@@ -293,7 +293,7 @@ if menu == "📊 Dashboard & Insights":
                 st.plotly_chart(fig_products, use_container_width=True)
                 
             with col2:
-                # Country-wise Sales Volume with customized Logarithmic y-axis
+                # Country-wise Sales Volume with solid Blue color to prevent light color scaling
                 st.subheader("Transaction Volume by Country")
                 
                 country_sales = cleaned_df.groupby('Country')['InvoiceNo'].nunique().reset_index()
@@ -303,12 +303,13 @@ if menu == "📊 Dashboard & Insights":
                     country_sales,
                     x='Country',
                     y='InvoiceNo',
-                    color='InvoiceNo',
                     log_y=True,
-                    color_continuous_scale='Blues',
                     labels={'InvoiceNo': 'Number of Orders'},
                     template='plotly_white'
                 )
+                
+                # Make all bars a solid, clear dark blue instead of linear white-to-blue gradient
+                fig_country.update_traces(marker_color='#2563eb', marker_line_color='#1e40af', marker_line_width=1)
                 
                 # Customize Y-axis explicitly to show custom ticks including "50"
                 fig_country.update_yaxes(
