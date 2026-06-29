@@ -73,17 +73,31 @@ st.markdown("""
         border-left: 4px solid transparent !important;
         background-color: transparent !important;
         
-        /* Prevent selection styling */
+        /* Prevent browser selection styling on click */
         user-select: none !important;
         -webkit-user-select: none !important;
         -moz-user-select: none !important;
         -ms-user-select: none !important;
     }
     
-    /* CRITICAL FIX: Strip all background colors from any text containers, paragraphs, or spans inside the label */
-    div[data-testid="stRadio"] div[role="radiogroup"] label * {
+    /* CRITICAL FIXES: Strip all backgrounds and outlines from focused or selected text blocks */
+    div[data-testid="stRadio"] div[role="radiogroup"] label *,
+    div[data-testid="stRadio"] div[role="radiogroup"] label *:focus,
+    div[data-testid="stRadio"] div[role="radiogroup"] label *:active {
         background: transparent !important;
         background-color: transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Eliminate text selection blue highlight color on click */
+    div[data-testid="stRadio"] label::selection,
+    div[data-testid="stRadio"] label *::selection,
+    div[data-testid="stRadio"] label::-moz-selection,
+    div[data-testid="stRadio"] label *::-moz-selection {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: inherit !important;
     }
     
     /* Radio option Hover style: Soft blue capsule background, text turns blue */
@@ -104,6 +118,8 @@ st.markdown("""
     div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p {
         color: #1d4ed8 !important;
         font-weight: 600 !important;
+        background: transparent !important;
+        background-color: transparent !important;
     }
     
     /* BULLETPROOF RADIO DOT STYLING: Override checkmark colors regardless of whether Streamlit uses divs or spans */
