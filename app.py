@@ -51,6 +51,12 @@ st.markdown("""
     }
     
     /* 2. Custom Radio Button Slicer styling (Sidebar Navigation) */
+    div[data-testid="stRadio"] {
+        /* Force Streamlit CSS theme variables to Blue for this widget */
+        --primary-color: #3b82f6 !important;
+        --primary: #3b82f6 !important;
+    }
+    
     div[data-testid="stRadio"] div[role="radiogroup"] {
         gap: 4px !important;
     }
@@ -64,8 +70,20 @@ st.markdown("""
         margin-bottom: 6px !important;
         transition: all 0.2s ease !important;
         background-color: transparent !important;
+        background: transparent !important;
         cursor: pointer !important;
         width: 100% !important;
+        /* Prevent accidental text highlight selection in browsers */
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+    }
+    
+    /* Ensure no child elements of the label have a solid background color block */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label * {
+        background: transparent !important;
+        background-color: transparent !important;
     }
     
     /* Radio option Hover style */
@@ -77,7 +95,7 @@ st.markdown("""
         color: #3b82f6 !important;
     }
     
-    /* Radio option Selected/Active style */
+    /* Radio option Selected/Active style (with light blue background tint) */
     div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
         background-color: rgba(59, 130, 246, 0.1) !important;
         border-left: 4px solid #3b82f6 !important;
@@ -88,9 +106,21 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Make standard radio dot blue when selected */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label input:checked + div {
+    /* Target the checkmark/dot borders and circle backgrounds to Blue */
+    div[data-testid="stRadio"] input[type="radio"]:checked + div {
         border-color: #3b82f6 !important;
+    }
+    
+    div[data-testid="stRadio"] input[type="radio"]:checked + div > div {
+        background-color: #3b82f6 !important;
+    }
+    
+    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + div {
+        border-color: #3b82f6 !important;
+        background-color: transparent !important;
+    }
+    
+    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + div > div {
         background-color: #3b82f6 !important;
     }
     
