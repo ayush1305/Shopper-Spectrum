@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for modern Blue & White cohesive theme
+# Custom CSS for modern Blue & White theme supporting Light/Dark modes natively
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -24,18 +24,14 @@ st.markdown("""
         font-family: 'Outfit', sans-serif;
     }
     
-    .main {
-        background: linear-gradient(135deg, #0a0f1d 0%, #0f172a 100%);
-    }
-    
-    /* Header card styling with elegant Blue-to-White gradient */
+    /* 1. Header card styling with high contrast Blue-to-Navy gradient text */
     .title-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.7);
+        border: 1px solid rgba(15, 23, 42, 0.08);
         border-radius: 15px;
         padding: 25px;
         margin-bottom: 25px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
     }
@@ -43,40 +39,110 @@ st.markdown("""
     .title-card h1 {
         font-size: 2.2rem;
         font-weight: 800;
-        background: linear-gradient(90deg, #ffffff, #60a5fa, #3b82f6);
+        background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin-bottom: 5px;
     }
     
-    /* Custom cards for recommendations - Cohesive Blue */
+    .title-card p {
+        color: #475569 !important;
+        font-weight: 400;
+    }
+    
+    /* 2. Custom Radio Button Slicer styling (Sidebar Navigation) */
+    div[data-testid="stRadio"] div[role="radiogroup"] {
+        gap: 4px !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] > label {
+        display: flex !important;
+        align-items: center !important;
+        padding: 10px 16px !important;
+        border-radius: 8px !important;
+        border-left: 4px solid transparent !important;
+        margin-bottom: 6px !important;
+        transition: all 0.2s ease !important;
+        background-color: transparent !important;
+        cursor: pointer !important;
+        width: 100% !important;
+    }
+    
+    /* Radio option Hover style */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
+        background-color: rgba(59, 130, 246, 0.05) !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover p {
+        color: #3b82f6 !important;
+    }
+    
+    /* Radio option Selected/Active style */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
+        background-color: rgba(59, 130, 246, 0.1) !important;
+        border-left: 4px solid #3b82f6 !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p {
+        color: #1d4ed8 !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Make standard radio dot blue when selected */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label input:checked + div {
+        border-color: #3b82f6 !important;
+        background-color: #3b82f6 !important;
+    }
+    
+    /* 3. Style Tab line selection indicator to Blue */
+    button[data-baseweb="tab"] {
+        color: #64748b !important;
+        border-bottom: 2px solid transparent !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    button[data-baseweb="tab"]:hover {
+        color: #3b82f6 !important;
+    }
+    
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #3b82f6 !important;
+        border-bottom: 2px solid #3b82f6 !important;
+    }
+    
+    /* Streamlit default tab accent line styling override */
+    div[data-baseweb="tab-highlight"] {
+        background-color: #3b82f6 !important;
+    }
+    
+    /* 4. Recommendation Card styling */
     .rec-card {
-        background: rgba(255, 255, 255, 0.02);
+        background: rgba(15, 23, 42, 0.02);
         border-left: 5px solid #3b82f6;
-        border-right: 1px solid rgba(255, 255, 255, 0.05);
-        border-top: 1px solid rgba(255, 255, 255, 0.05);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-right: 1px solid rgba(15, 23, 42, 0.05);
+        border-top: 1px solid rgba(15, 23, 42, 0.05);
+        border-bottom: 1px solid rgba(15, 23, 42, 0.05);
         border-radius: 8px;
         padding: 15px 20px;
         margin-bottom: 12px;
         transition: transform 0.2s, background-color 0.2s;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     }
     
     .rec-card:hover {
         transform: translateX(5px);
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(59, 130, 246, 0.05);
     }
     
     .rec-title {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #ffffff;
+        color: #0f172a;
     }
     
     .rec-meta {
         font-size: 0.85rem;
-        color: #94a3b8;
+        color: #475569;
         margin-top: 5px;
         display: flex;
         justify-content: space-between;
@@ -84,35 +150,35 @@ st.markdown("""
     
     .rec-score {
         font-weight: bold;
-        color: #60a5fa;
+        color: #2563eb;
     }
     
-    /* Segment result cards using shades of blue & slate */
+    /* 5. Customer Segment result cards */
     .segment-card {
         border-radius: 12px;
         padding: 25px;
         margin-top: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
     }
     
     .segment-high {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(96, 165, 250, 0.15) 100%);
-        border-left: 6px solid #3b82f6;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+        border-left: 6px solid #1e40af;
     }
     
     .segment-regular {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.12) 0%, rgba(147, 197, 253, 0.12) 100%);
-        border-left: 6px solid #60a5fa;
+        background: linear-gradient(135deg, rgba(96, 165, 250, 0.08) 0%, rgba(147, 197, 253, 0.08) 100%);
+        border-left: 6px solid #3b82f6;
     }
     
     .segment-occasional {
-        background: linear-gradient(135deg, rgba(147, 197, 253, 0.08) 0%, rgba(191, 219, 254, 0.08) 100%);
-        border-left: 6px solid #93c5fd;
+        background: linear-gradient(135deg, rgba(147, 197, 253, 0.05) 0%, rgba(191, 219, 254, 0.05) 100%);
+        border-left: 6px solid #60a5fa;
     }
     
     .segment-at-risk {
-        background: linear-gradient(135deg, rgba(100, 116, 139, 0.12) 0%, rgba(148, 163, 184, 0.12) 100%);
+        background: linear-gradient(135deg, rgba(100, 116, 139, 0.08) 0%, rgba(148, 163, 184, 0.08) 100%);
         border-left: 6px solid #64748b;
     }
 </style>
@@ -130,8 +196,8 @@ def check_assets():
     return all(os.path.exists(f) for f in required_files)
 
 # Sidebar UI
-st.sidebar.markdown("<h2 style='text-align: center;'>🛒 Shopper Spectrum</h2>", unsafe_allow_html=True)
-st.sidebar.markdown("<p style='text-align: center; color:#94a3b8; font-size:0.9rem;'>Customer Segmentation & Product Recommendations</p>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align: center; color: #0f172a;'>🛒 Shopper Spectrum</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<p style='text-align: center; color:#475569; font-size:0.9rem;'>Customer Segmentation & Product Recommendations</p>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
 # Main Navigation
@@ -182,7 +248,7 @@ if menu == "📊 Dashboard & Insights":
     st.markdown("""
     <div class="title-card">
         <h1>📊 Dashboard & E-Commerce Insights</h1>
-        <p style="color:#94a3b8; margin:0;">Exploratory Data Analysis, transaction patterns, and RFM-based customer clusters</p>
+        <p style="margin:0;">Exploratory Data Analysis, transaction patterns, and RFM-based customer clusters</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -229,7 +295,7 @@ if menu == "📊 Dashboard & Insights":
                     color='Quantity',
                     color_continuous_scale='Blues',
                     labels={'Quantity': 'Units Sold', 'Description': 'Product'},
-                    template='plotly_dark'
+                    template='plotly_white'
                 )
                 fig_products.update_layout(yaxis={'categoryorder':'total ascending'}, margin=dict(l=10, r=10, t=10, b=10))
                 st.plotly_chart(fig_products, use_container_width=True)
@@ -246,7 +312,7 @@ if menu == "📊 Dashboard & Insights":
                     color='InvoiceNo',
                     color_continuous_scale='Blues',
                     labels={'InvoiceNo': 'Number of Orders'},
-                    template='plotly_dark'
+                    template='plotly_white'
                 )
                 fig_country.update_layout(margin=dict(l=10, r=10, t=10, b=10))
                 st.plotly_chart(fig_country, use_container_width=True)
@@ -261,7 +327,7 @@ if menu == "📊 Dashboard & Insights":
                 y='Quantity',
                 markers=True,
                 labels={'Quantity': 'Total Items Sold', 'YearMonth': 'Period'},
-                template='plotly_dark'
+                template='plotly_white'
             )
             fig_trend.update_traces(line_color='#3b82f6', line_width=3)
             fig_trend.update_layout(margin=dict(l=10, r=10, t=10, b=10))
@@ -273,15 +339,15 @@ if menu == "📊 Dashboard & Insights":
             
             with col_d1:
                 # Recency (Primary Blue)
-                fig_rec = px.histogram(rfm_df, x='Recency', nbins=30, color_discrete_sequence=['#3b82f6'], template='plotly_dark', title="Recency (Days since last purchase)")
+                fig_rec = px.histogram(rfm_df, x='Recency', nbins=30, color_discrete_sequence=['#3b82f6'], template='plotly_white', title="Recency (Days since last purchase)")
                 st.plotly_chart(fig_rec, use_container_width=True)
             with col_d2:
                 # Frequency (Secondary Blue)
-                fig_freq = px.histogram(rfm_df, x='Frequency', nbins=30, color_discrete_sequence=['#60a5fa'], template='plotly_dark', title="Frequency (Number of orders)")
+                fig_freq = px.histogram(rfm_df, x='Frequency', nbins=30, color_discrete_sequence=['#60a5fa'], template='plotly_white', title="Frequency (Number of orders)")
                 st.plotly_chart(fig_freq, use_container_width=True)
             with col_d3:
                 # Monetary (Light Blue)
-                fig_mon = px.histogram(rfm_df, x='Monetary', nbins=30, color_discrete_sequence=['#93c5fd'], template='plotly_dark', title="Monetary (Total spend)")
+                fig_mon = px.histogram(rfm_df, x='Monetary', nbins=30, color_discrete_sequence=['#93c5fd'], template='plotly_white', title="Monetary (Total spend)")
                 st.plotly_chart(fig_mon, use_container_width=True)
                 
         with tab3:
@@ -294,16 +360,16 @@ if menu == "📊 Dashboard & Insights":
                 z='Monetary',
                 color='Segment',
                 color_discrete_map={
-                    'High-Value': '#3b82f6',    # Deep Tech Blue
-                    'Regular': '#60a5fa',       # Bright Sky Blue
-                    'Occasional': '#93c5fd',    # Pale Pastel Blue
+                    'High-Value': '#1e40af',    # Deep Tech Blue
+                    'Regular': '#3b82f6',       # Bright Blue
+                    'Occasional': '#60a5fa',    # Sky Blue
                     'At-Risk': '#64748b'        # Slate Grey-Blue
                 },
                 hover_name='CustomerID',
                 log_y=True,
                 log_z=True,
                 opacity=0.85,
-                template='plotly_dark'
+                template='plotly_white'
             )
             fig_3d.update_layout(
                 scene=dict(
@@ -338,7 +404,7 @@ elif menu == "🛒 Product Recommendations":
     st.markdown("""
     <div class="title-card">
         <h1>🛒 Collaborative Filtering Recommendation System</h1>
-        <p style="color:#94a3b8; margin:0;">Find products that are commonly purchased together using item-to-item similarity</p>
+        <p style="margin:0;">Find products that are commonly purchased together using item-to-item similarity</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -403,7 +469,7 @@ elif menu == "👥 Customer Segmentation":
     st.markdown("""
     <div class="title-card">
         <h1>👥 Customer Segment Predictor</h1>
-        <p style="color:#94a3b8; margin:0;">Input user metrics (Recency, Frequency, Monetary) to identify customer segment</p>
+        <p style="margin:0;">Input user metrics (Recency, Frequency, Monetary) to identify customer segment</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -447,9 +513,9 @@ elif menu == "👥 Customer Segmentation":
         with col_in2:
             st.markdown("### 📖 Segment Key Definitions")
             st.markdown("""
-            * **👑 High-Value:** Frequent, recent shoppers who generate substantial revenue. (Primary Blue)
-            * **📈 Regular:** Steady customers who shop moderately and have average monetary value. (Medium Blue)
-            * **🌿 Occasional:** Low frequency, inactive customers who buy rarely and spend small amounts. (Light Blue)
+            * **👑 High-Value:** Frequent, recent shoppers who generate substantial revenue. (Deep Blue)
+            * **📈 Regular:** Steady customers who shop moderately and have average monetary value. (Active Blue)
+            * **🌿 Occasional:** Low frequency, inactive customers who buy rarely and spend small amounts. (Sky Blue)
             * **🚨 At-Risk:** Previously active or high-value shoppers who have not purchased in a long time. (Muted Slate)
             """)
             
@@ -480,10 +546,10 @@ elif menu == "👥 Customer Segmentation":
             if predicted_segment == 'High-Value':
                 st.markdown("""
                 <div class="segment-card segment-high">
-                    <h2 style='margin:0; color:#ffffff;'>👑 Segment: High-Value Customer</h2>
-                    <p style='margin:10px 0; color:#e2e8f0;'>This customer displays high transaction frequency, large spend values, and bought from us recently.</p>
-                    <strong style="color:#ffffff;">💡 Marketing Strategy:</strong>
-                    <ul style="color:#e2e8f0;">
+                    <h2 style='margin:0; color:#1e3a8a;'>👑 Segment: High-Value Customer</h2>
+                    <p style='margin:10px 0; color:#1e293b;'>This customer displays high transaction frequency, large spend values, and bought from us recently.</p>
+                    <strong style="color:#1e3a8a;">💡 Marketing Strategy:</strong>
+                    <ul style="color:#334155;">
                         <li>Offer exclusive loyalty rewards & VIP benefits.</li>
                         <li>Give early-bird access to new products.</li>
                         <li>Personal shopper/high-touch communication services.</li>
@@ -494,10 +560,10 @@ elif menu == "👥 Customer Segmentation":
             elif predicted_segment == 'Regular':
                 st.markdown("""
                 <div class="segment-card segment-regular">
-                    <h2 style='margin:0; color:#ffffff;'>📈 Segment: Regular Customer</h2>
-                    <p style='margin:10px 0; color:#e2e8f0;'>This customer behaves steadily, making occasional purchases with moderate spends.</p>
-                    <strong style="color:#ffffff;">💡 Marketing Strategy:</strong>
-                    <ul style="color:#e2e8f0;">
+                    <h2 style='margin:0; color:#1d4ed8;'>📈 Segment: Regular Customer</h2>
+                    <p style='margin:10px 0; color:#1e293b;'>This customer behaves steadily, making occasional purchases with moderate spends.</p>
+                    <strong style="color:#1d4ed8;">💡 Marketing Strategy:</strong>
+                    <ul style="color:#334155;">
                         <li>Cross-sell related products or offer product bundles.</li>
                         <li>Engage with standard newsletters and updates.</li>
                         <li>Provide loyalty discounts to boost order frequencies.</li>
@@ -508,10 +574,10 @@ elif menu == "👥 Customer Segmentation":
             elif predicted_segment == 'Occasional':
                 st.markdown("""
                 <div class="segment-card segment-occasional">
-                    <h2 style='margin:0; color:#ffffff;'>🌿 Segment: Occasional Customer</h2>
-                    <p style='margin:10px 0; color:#e2e8f0;'>This customer buys rarely, spends minor amounts, and hasn't visited recently.</p>
-                    <strong style="color:#ffffff;">💡 Marketing Strategy:</strong>
-                    <ul style="color:#e2e8f0;">
+                    <h2 style='margin:0; color:#0284c7;'>🌿 Segment: Occasional Customer</h2>
+                    <p style='margin:10px 0; color:#1e293b;'>This customer buys rarely, spends minor amounts, and hasn't visited recently.</p>
+                    <strong style="color:#0284c7;">💡 Marketing Strategy:</strong>
+                    <ul style="color:#334155;">
                         <li>Send flash-sale notifications and time-bound coupons.</li>
                         <li>Provide low-barrier discount codes (e.g. Free Shipping).</li>
                         <li>Promote best-selling and trending products.</li>
@@ -522,10 +588,10 @@ elif menu == "👥 Customer Segmentation":
             else:  # At-Risk
                 st.markdown("""
                 <div class="segment-card segment-at-risk">
-                    <h2 style='margin:0; color:#ffffff;'>🚨 Segment: At-Risk Customer</h2>
-                    <p style='margin:10px 0; color:#e2e8f0;'>This customer has not purchased in a long time. They may be churning.</p>
-                    <strong style="color:#ffffff;">💡 Marketing Strategy:</strong>
-                    <ul style="color:#e2e8f0;">
+                    <h2 style='margin:0; color:#475569;'>🚨 Segment: At-Risk Customer</h2>
+                    <p style='margin:10px 0; color:#1e293b;'>This customer has not purchased in a long time. They may be churning.</p>
+                    <strong style="color:#475569;">💡 Marketing Strategy:</strong>
+                    <ul style="color:#334155;">
                         <li>Send direct "We Miss You" Win-Back email campaigns with heavy discounts.</li>
                         <li>Conduct surveys to understand their dissatisfaction.</li>
                         <li>Pitch personalized product updates based on their past history.</li>
@@ -538,7 +604,7 @@ elif menu == "⚙️ Data & Model Control":
     st.markdown("""
     <div class="title-card">
         <h1>⚙️ Data & Model Management</h1>
-        <p style="color:#94a3b8; margin:0;">Upload your custom dataset, train models, and manage output files</p>
+        <p style="margin:0;">Upload your custom dataset, train models, and manage output files</p>
     </div>
     """, unsafe_allow_html=True)
     
