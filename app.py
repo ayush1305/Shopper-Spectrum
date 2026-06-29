@@ -293,19 +293,29 @@ if menu == "📊 Dashboard & Insights":
                 st.plotly_chart(fig_products, use_container_width=True)
                 
             with col2:
-                # Country-wise Sales Volume (Cohesive Blues)
+                # Country-wise Sales Volume with customized Logarithmic y-axis
                 st.subheader("Transaction Volume by Country")
+                
                 country_sales = cleaned_df.groupby('Country')['InvoiceNo'].nunique().reset_index()
                 country_sales = country_sales.sort_values(by='InvoiceNo', ascending=False)
+                
                 fig_country = px.bar(
                     country_sales,
                     x='Country',
                     y='InvoiceNo',
                     color='InvoiceNo',
+                    log_y=True,
                     color_continuous_scale='Blues',
                     labels={'InvoiceNo': 'Number of Orders'},
                     template='plotly_white'
                 )
+                
+                # Customize Y-axis explicitly to show custom ticks including "50"
+                fig_country.update_yaxes(
+                    tickvals=[10, 50, 100, 500, 1000, 5000, 15000],
+                    ticktext=["10", "50", "100", "500", "1k", "5k", "15k"]
+                )
+                
                 fig_country.update_layout(margin=dict(l=10, r=10, t=10, b=10))
                 st.plotly_chart(fig_country, use_container_width=True)
                 
