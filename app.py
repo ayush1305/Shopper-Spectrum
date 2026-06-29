@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Clean, simple custom CSS ONLY for results and elements we want blue (no radio overrides!)
+# Clean CSS strictly for custom HTML cards (no native Streamlit widget styling!)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -44,68 +44,6 @@ st.markdown("""
     .title-card p {
         color: #475569 !important;
         font-weight: 400;
-    }
-    
-    /* 1. Style tabs selection indicator and text color to Blue */
-    button[data-baseweb="tab"] {
-        transition: all 0.2s ease !important;
-    }
-    
-    button[data-baseweb="tab"]:hover {
-        color: #3b82f6 !important;
-    }
-    
-    button[data-baseweb="tab"][aria-selected="true"] {
-        color: #3b82f6 !important;
-        border-bottom-color: #3b82f6 !important;
-    }
-    
-    div[data-baseweb="tab-highlight"] {
-        background-color: #3b82f6 !important;
-    }
-    
-    /* 2. Style all primary buttons to Blue instead of default red/orange */
-    button[data-testid="baseButton-primary"] {
-        background-color: #3b82f6 !important;
-        color: white !important;
-        border: 1px solid #3b82f6 !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
-        transition: all 0.2s ease !important;
-    }
-    
-    button[data-testid="baseButton-primary"]:hover {
-        background-color: #1d4ed8 !important;
-        border-color: #1d4ed8 !important;
-        color: white !important;
-        box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4) !important;
-    }
-    
-    button[data-testid="baseButton-primary"]:active {
-        background-color: #1e3a8a !important;
-        border-color: #1e3a8a !important;
-        color: white !important;
-    }
-    
-    /* 3. Style Streamlit Sliders to Blue (Thumb and Track highlight) */
-    div[data-testid="stSlider"] div[role="slider"] {
-        background-color: #3b82f6 !important;
-        border-color: #3b82f6 !important;
-    }
-    
-    div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div {
-        background: #3b82f6 !important;
-    }
-    
-    /* Style slider value text to Blue */
-    div[data-testid="stSlider"] div[data-baseweb="slider"] + div {
-        color: #3b82f6 !important;
-    }
-    
-    /* 4. Style input focus borders to blue */
-    div[data-testid="stNumberInput"] input:focus,
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:focus-within {
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 0 1px #3b82f6 !important;
     }
     
     /* Recommendation Item Card */
@@ -193,7 +131,7 @@ st.sidebar.markdown("<h2 style='text-align: center; color: #0f172a;'>🛒 Shoppe
 st.sidebar.markdown("<p style='text-align: center; color:#475569; font-size:0.9rem;'>Customer Segmentation & Product Recommendations</p>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-# Main Navigation (Uses native Streamlit styling configured via config.toml)
+# Main Navigation (Uses standard Streamlit rendering)
 menu = st.sidebar.radio(
     "Navigation Menu",
     ["📊 Dashboard & Insights", "🛒 Product Recommendations", "👥 Customer Segmentation", "⚙️ Data & Model Control"]
