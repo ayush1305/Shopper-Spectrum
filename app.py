@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Clean CSS strictly for custom HTML cards (no native Streamlit widget styling!)
+# Custom CSS specifically targeting the tabs and action buttons to style them Blue
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -44,6 +44,67 @@ st.markdown("""
     .title-card p {
         color: #475569 !important;
         font-weight: 400;
+    }
+    
+    /* 1. Style tabs active highlight line and text color to Blue */
+    button[data-baseweb="tab"] {
+        transition: all 0.2s ease !important;
+    }
+    
+    button[data-baseweb="tab"]:hover {
+        color: #3b82f6 !important;
+    }
+    
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #3b82f6 !important;
+        border-bottom-color: #3b82f6 !important;
+    }
+    
+    div[data-baseweb="tab-highlight"] {
+        background-color: #3b82f6 !important;
+    }
+    
+    /* 2. Style all primary buttons to Blue instead of default red/orange */
+    button[data-testid="baseButton-primary"],
+    div[data-testid="stButton"] button[kind="primary"],
+    .stButton>button {
+        background-color: #3b82f6 !important;
+        color: white !important;
+        border: 1px solid #3b82f6 !important;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:hover,
+    div[data-testid="stButton"] button[kind="primary"]:hover,
+    .stButton>button:hover {
+        background-color: #1d4ed8 !important;
+        border-color: #1d4ed8 !important;
+        color: white !important;
+        box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4) !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:active,
+    div[data-testid="stButton"] button[kind="primary"]:active,
+    .stButton>button:active {
+        background-color: #1e3a8a !important;
+        border-color: #1e3a8a !important;
+        color: white !important;
+    }
+    
+    /* 3. Style Sliders to Blue (Thumb and Track highlight) */
+    div[data-testid="stSlider"] div[role="slider"] {
+        background-color: #3b82f6 !important;
+        border-color: #3b82f6 !important;
+    }
+    
+    div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div {
+        background: #3b82f6 !important;
+    }
+    
+    /* Style slider value text to Blue */
+    div[data-testid="stSlider"] div[data-baseweb="slider"] + div {
+        color: #3b82f6 !important;
     }
     
     /* Recommendation Item Card */
