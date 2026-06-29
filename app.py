@@ -64,16 +64,13 @@ st.markdown("""
     div[data-testid="stRadio"] div[role="radiogroup"] > label {
         display: flex !important;
         align-items: center !important;
-        padding: 8px 12px !important;
+        padding: 10px 16px !important;
         border-radius: 8px !important;
         margin-bottom: 6px !important;
         transition: all 0.2s ease !important;
         cursor: pointer !important;
         width: 100% !important;
-        border-left: none !important; /* No left border strip */
-        
-        /* Force background to be completely transparent under all states */
-        background: transparent !important;
+        border-left: 4px solid transparent !important;
         background-color: transparent !important;
         
         /* Prevent selection styling */
@@ -83,25 +80,30 @@ st.markdown("""
         -ms-user-select: none !important;
     }
     
-    /* Ensure no text or inner containers have any background color block */
+    /* CRITICAL: Ensure no inner wrappers, markdown containers, or text blocks have a solid background color block */
     div[data-testid="stRadio"] div[role="radiogroup"] > label * {
         background: transparent !important;
         background-color: transparent !important;
     }
     
-    /* Radio option Hover style: Text turns blue, background remains transparent */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover p {
-        color: #3b82f6 !important;
-        background: transparent !important;
-        background-color: transparent !important;
+    /* Radio option Hover style: Soft blue capsule background, text turns blue */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
+        background-color: rgba(59, 130, 246, 0.05) !important;
     }
     
-    /* Radio option Selected/Active style: Text turns blue, background remains transparent */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover p {
+        color: #3b82f6 !important;
+    }
+    
+    /* Radio option Selected/Active style: Light blue capsule background with blue left border, text turns blue */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
+        background-color: rgba(59, 130, 246, 0.1) !important;
+        border-left: 4px solid #3b82f6 !important;
+    }
+    
     div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p {
         color: #1d4ed8 !important;
         font-weight: 600 !important;
-        background: transparent !important;
-        background-color: transparent !important;
     }
     
     /* Target the checkmark/dot borders and circle backgrounds to Blue */
