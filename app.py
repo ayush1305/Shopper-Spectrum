@@ -160,7 +160,7 @@ st.markdown("""
     
     /* Streamlit default tab accent line styling override */
     div[data-baseweb="tab-highlight"] {
-        # background-color: #3b82f6 !important;
+         background-color: #3b82f6 !important;
     }
     
     /* 4. Recommendation Card styling */
