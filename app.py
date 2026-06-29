@@ -64,51 +64,50 @@ st.markdown("""
     div[data-testid="stRadio"] div[role="radiogroup"] > label {
         display: flex !important;
         align-items: center !important;
-        padding: 10px 16px !important;
+        padding: 8px 12px !important;
         border-radius: 8px !important;
-        border-left: 4px solid transparent !important;
         margin-bottom: 6px !important;
         transition: all 0.2s ease !important;
-        background-color: transparent !important;
-        background: transparent !important;
         cursor: pointer !important;
         width: 100% !important;
-        /* Prevent accidental text highlight selection in browsers */
+        border-left: none !important; /* No left border strip */
+        
+        /* Force background to be completely transparent under all states */
+        background: transparent !important;
+        background-color: transparent !important;
+        
+        /* Prevent selection styling */
         user-select: none !important;
         -webkit-user-select: none !important;
         -moz-user-select: none !important;
         -ms-user-select: none !important;
     }
     
-    /* Ensure no child elements of the label have a solid background color block */
+    /* Ensure no text or inner containers have any background color block */
     div[data-testid="stRadio"] div[role="radiogroup"] > label * {
         background: transparent !important;
         background-color: transparent !important;
     }
     
-    /* Radio option Hover style */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
-        background-color: rgba(59, 130, 246, 0.05) !important;
-    }
-    
+    /* Radio option Hover style: Text turns blue, background remains transparent */
     div[data-testid="stRadio"] div[role="radiogroup"] > label:hover p {
         color: #3b82f6 !important;
+        background: transparent !important;
+        background-color: transparent !important;
     }
     
-    /* Radio option Selected/Active style (with light blue background tint) */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
-        background-color: rgba(59, 130, 246, 0.1) !important;
-        border-left: 4px solid #3b82f6 !important;
-    }
-    
+    /* Radio option Selected/Active style: Text turns blue, background remains transparent */
     div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p {
         color: #1d4ed8 !important;
         font-weight: 600 !important;
+        background: transparent !important;
+        background-color: transparent !important;
     }
     
     /* Target the checkmark/dot borders and circle backgrounds to Blue */
     div[data-testid="stRadio"] input[type="radio"]:checked + div {
         border-color: #3b82f6 !important;
+        background-color: transparent !important;
     }
     
     div[data-testid="stRadio"] input[type="radio"]:checked + div > div {
