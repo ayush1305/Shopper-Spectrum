@@ -111,7 +111,7 @@ st.markdown("""
     
     /* Radio option Selected/Active style: Light blue capsule background with blue left border, text turns blue */
     div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
-        # background-color: rgba(59, 130, 246, 0.1) !important;
+        background-color: rgba(59, 130, 246, 0.1) !important;
         border-left: 4px solid #3b82f6 !important;
     }
     
@@ -154,7 +154,7 @@ st.markdown("""
     }
     
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #3b82f6 !important;
+        # color: #3b82f6 !important;
         border-bottom: 2px solid #3b82f6 !important;
     }
     
