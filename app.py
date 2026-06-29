@@ -118,14 +118,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Helper function to check if models and preprocessed data exist
+# Helper function to check if models and preprocessed data exist (directly in the root directory)
 def check_assets():
     required_files = [
-        "models/scaler.pkl",
-        "models/kmeans.pkl",
-        "models/similarity.pkl",
-        "models/cleaned_data.parquet",
-        "models/rfm_data.parquet"
+        "scaler.pkl",
+        "kmeans.pkl",
+        "similarity.pkl",
+        "cleaned_data.parquet",
+        "rfm_data.parquet"
     ]
     return all(os.path.exists(f) for f in required_files)
 
@@ -151,7 +151,8 @@ if not assets_exist:
             generate_synthetic_data("data/online_retail.csv")
         with st.spinner("Training models & processing data..."):
             from train_models import train_and_export_pipeline
-            train_and_export_pipeline()
+            # Train and output directly to current directory
+            train_and_export_pipeline("data/online_retail.csv", output_dir=".")
         st.success("App bootstrapped successfully!")
         st.rerun()
 else:
@@ -162,11 +163,11 @@ else:
 def load_model_assets():
     if not check_assets():
         return None
-    scaler = joblib.load("models/scaler.pkl")
-    kmeans = joblib.load("models/kmeans.pkl")
-    similarity_df = joblib.load("models/similarity.pkl")
-    cleaned_df = pd.read_parquet("models/cleaned_data.parquet")
-    rfm_df = pd.read_parquet("models/rfm_data.parquet")
+    scaler = joblib.load("scaler.pkl")
+    kmeans = joblib.load("kmeans.pkl")
+    similarity_df = joblib.load("similarity.pkl")
+    cleaned_df = pd.read_parquet("cleaned_data.parquet")
+    rfm_df = pd.read_parquet("rfm_data.parquet")
     
     # Pre-parse dates to datetime
     cleaned_df['InvoiceDate'] = pd.to_datetime(cleaned_df['InvoiceDate'])
@@ -415,10 +416,6 @@ elif menu == "👥 Customer Segmentation":
         
         with col_in1:
             st.markdown("### 📋 Enter Customer Attributes")
-            # Set defaults based on 25th, 50th, 75th percentiles of dataset
-            r_min, r_max = int(rfm_df['Recency'].min()), int(rfm_df['Recency'].max())
-            f_min, f_max = int(rfm_df['Frequency'].min()), int(rfm_df['Frequency'].max())
-            m_min, m_max = float(rfm_df['Monetary'].min()), float(rfm_df['Monetary'].max())
             
             recency_in = st.number_input(
                 "Recency (Days since last purchase)",
@@ -554,16 +551,16 @@ elif menu == "⚙️ Data & Model Control":
         if st.button("🚀 Process Uploaded Data & Retrain Models", type="primary"):
             # Save file to data folder
             os.makedirs("data", exist_ok=True)
-            with open("data/online_retail.csv", "wb") as f:
+            with open("data/online_retail_cleaned.csv", "wb") as f:
                 f.write(uploaded_file.getbuffer())
-            st.success("File uploaded successfully to `data/online_retail.csv`!")
+            st.success("File uploaded successfully to `data/online_retail_cleaned.csv`!")
             
-            # Retrain model
+            # Retrain model and output to root
             with st.spinner("Preprocessing transaction data and retraining machine learning models..."):
                 try:
                     from train_models import train_and_export_pipeline
-                    train_and_export_pipeline()
-                    st.success("🎉 Models successfully trained and outputs saved in compressed format!")
+                    train_and_export_pipeline("data/online_retail_cleaned.csv", output_dir=".")
+                    st.success("🎉 Models successfully trained and outputs saved in compressed format at the project root!")
                     st.cache_resource.clear()
                     st.rerun()
                 except Exception as e:
@@ -575,14 +572,14 @@ elif menu == "⚙️ Data & Model Control":
     col_stat1, col_stat2 = st.columns(2)
     
     with col_stat1:
-        st.markdown("#### Saved Files Size Check")
+        st.markdown("#### Saved Files Size Check (Direct Root Location)")
         # List size of models files
         files_to_check = [
-            ("Cleaned Data (Parquet)", "models/cleaned_data.parquet"),
-            ("RFM Data with Clusters (Parquet)", "models/rfm_data.parquet"),
-            ("Product Similarity Matrix (PKL)", "models/similarity.pkl"),
-            ("Standard Scaler Model (PKL)", "models/scaler.pkl"),
-            ("KMeans Clustering Model (PKL)", "models/kmeans.pkl")
+            ("Cleaned Data (Parquet)", "cleaned_data.parquet"),
+            ("RFM Data with Clusters (Parquet)", "rfm_data.parquet"),
+            ("Product Similarity Matrix (PKL)", "similarity.pkl"),
+            ("Standard Scaler Model (PKL)", "scaler.pkl"),
+            ("KMeans Clustering Model (PKL)", "kmeans.pkl")
         ]
         
         file_stats = []
@@ -600,10 +597,9 @@ elif menu == "⚙️ Data & Model Control":
         st.success("""
         **No GitHub Limits Exceeded!**
         
-        If your raw database is large (e.g. 24MB+):
-        1. Keep the large raw CSV locally in your `data/` folder (add it to `.gitignore` so it doesn't push to GitHub).
-        2. The pipeline converts the data into a **Parquet format** (`cleaned_data.parquet` and `rfm_data.parquet`).
-        3. This slashes file sizes by **up to 90%** (24MB shrinks to ~2-3MB).
-        4. You only commit the `models/` directory (containing the lightweight parquet files and PKL models) to GitHub!
-        5. The Streamlit app loads these Parquet files instantly, ensuring extremely fast page loading and clean deployments without breaking GitHub upload rules.
+        1. Keep your large raw CSV locally in your `data/` folder (add it to `.gitignore` so it doesn't push to GitHub).
+        2. The pipeline converts the data into **Parquet format** (`cleaned_data.parquet` and `rfm_data.parquet`) and saves them directly in the root directory.
+        3. This slashes file sizes by **up to 92%** (e.g. 42MB shrinks to ~3MB).
+        4. You only commit the lightweight `.parquet` and `.pkl` files located in the root of your repository to GitHub!
+        5. Drag and drop all files directly into your GitHub repository root. No nested folders required!
         """)
