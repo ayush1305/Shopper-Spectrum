@@ -80,8 +80,8 @@ st.markdown("""
         -ms-user-select: none !important;
     }
     
-    /* CRITICAL: Ensure no inner wrappers, markdown containers, or text blocks have a solid background color block */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label * {
+    /* CRITICAL FIX: Strip all background colors from any text containers, paragraphs, or spans inside the label */
+    div[data-testid="stRadio"] div[role="radiogroup"] label * {
         background: transparent !important;
         background-color: transparent !important;
     }
@@ -106,22 +106,23 @@ st.markdown("""
         font-weight: 600 !important;
     }
     
-    /* Target the checkmark/dot borders and circle backgrounds to Blue */
-    div[data-testid="stRadio"] input[type="radio"]:checked + div {
+    /* BULLETPROOF RADIO DOT STYLING: Override checkmark colors regardless of whether Streamlit uses divs or spans */
+    div[data-testid="stRadio"] input[type="radio"]:checked + * {
         border-color: #3b82f6 !important;
         background-color: transparent !important;
     }
     
-    div[data-testid="stRadio"] input[type="radio"]:checked + div > div {
+    div[data-testid="stRadio"] input[type="radio"]:checked + * > * {
         background-color: #3b82f6 !important;
     }
     
-    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + div {
+    /* Alternative BaseWeb selector targets to ensure the circle and checkmark are blue */
+    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + * {
         border-color: #3b82f6 !important;
         background-color: transparent !important;
     }
     
-    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + div > div {
+    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + * > * {
         background-color: #3b82f6 !important;
     }
     
