@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS specifically targeting the tabs and action buttons to style them Blue
+# Custom CSS for modern Blue & White theme with customized Slicer navigation
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -105,6 +105,93 @@ st.markdown("""
     /* Style slider value text to Blue */
     div[data-testid="stSlider"] div[data-baseweb="slider"] + div {
         color: #3b82f6 !important;
+    }
+    
+    /* 4. Slicer / Sidebar Navigation custom styling */
+    div[data-testid="stRadio"] {
+        --primary-color: #3b82f6 !important;
+        --primary: #3b82f6 !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] {
+        gap: 4px !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] > label {
+        display: flex !important;
+        align-items: center !important;
+        padding: 10px 16px !important;
+        border-radius: 8px !important;
+        margin-bottom: 6px !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer !important;
+        width: 100% !important;
+        border-left: 6px solid transparent !important;
+        background-color: transparent !important;
+        
+        /* Prevent browser text selection highlights */
+        user-select: none !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        -ms-user-select: none !important;
+    }
+    
+    /* Strip backgrounds from text elements and emojis within the sidebar radio menu */
+    div[data-testid="stRadio"] div[role="radiogroup"] label * {
+        background: transparent !important;
+        background-color: transparent !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Text selection color override */
+    div[data-testid="stRadio"] label::selection,
+    div[data-testid="stRadio"] label *::selection {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+    
+    /* Slicer Row Hover Style: light blue background, text turns blue */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
+        background-color: rgba(59, 130, 246, 0.05) !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover p {
+        color: #3b82f6 !important;
+    }
+    
+    /* Slicer Row Active/Selected Style: light blue background, 6px thick dark blue left border, dark blue text */
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
+        background-color: rgba(59, 130, 246, 0.1) !important;
+        border-left: 6px solid #1d4ed8 !important;
+    }
+    
+    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p {
+        color: #1d4ed8 !important;
+        font-weight: 600 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    
+    /* Style active checkmark/radio dot to Blue */
+    div[data-testid="stRadio"] label[data-baseweb="radio"] input[type="radio"]:checked + div {
+        border-color: #3b82f6 !important;
+    }
+    div[data-testid="stRadio"] label[data-baseweb="radio"] input[type="radio"]:checked + div > div {
+        background-color: #3b82f6 !important;
+    }
+    div[data-testid="stRadio"] label[data-baseweb="radio"] input[type="radio"]:checked + span {
+        border-color: #3b82f6 !important;
+    }
+    div[data-testid="stRadio"] label[data-baseweb="radio"] input[type="radio"]:checked + span > div {
+        background-color: #3b82f6 !important;
+    }
+    div[data-testid="stRadio"] label[data-baseweb="radio"] input[type="radio"]:checked + * {
+        border-color: #3b82f6 !important;
+    }
+    div[data-testid="stRadio"] label[data-baseweb="radio"] input[type="radio"]:checked + * > * {
+        background-color: #3b82f6 !important;
     }
     
     /* Recommendation Item Card */
