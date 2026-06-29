@@ -7,9 +7,17 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.metrics.pairwise import cosine_similarity
 
-def train_and_export_pipeline(data_path, models_dir="models"):
+def train_and_export_pipeline(data_path=None, output_dir="."):
+    # Resolve default data path if None
+    if data_path is None:
+        if os.path.exists("data/online_retail_cleaned.csv"):
+            data_path = "data/online_retail_cleaned.csv"
+        elif os.path.exists("data/online_retail.csv"):
+            data_path = "data/online_retail.csv"
+        else:
+            raise FileNotFoundError("No retail CSV file found in data/ folder.")
+
     print(f"Starting data preprocessing and model training pipeline using: {data_path}...")
-    os.makedirs(models_dir, exist_ok=True)
     
     # 1. Load Dataset
     if not os.path.exists(data_path):
@@ -58,7 +66,7 @@ def train_and_export_pipeline(data_path, models_dir="models"):
     print(f"Filtered dataset to {len(df)} clean transactions.")
     
     # Save the cleaned dataset to parquet format (highly compressed, perfect for GitHub)
-    cleaned_parquet_path = os.path.join(models_dir, "cleaned_data.parquet")
+    cleaned_parquet_path = os.path.join(output_dir, "cleaned_data.parquet")
     df.to_parquet(cleaned_parquet_path, index=False)
     print(f"Saved cleaned data to {cleaned_parquet_path} (compressed Parquet format).")
     
@@ -121,22 +129,20 @@ def train_and_export_pipeline(data_path, models_dir="models"):
     print(rfm.groupby('Segment')[['Recency', 'Frequency', 'Monetary']].mean())
     
     # Save the RFM dataframe with segments to parquet
-    rfm_parquet_path = os.path.join(models_dir, "rfm_data.parquet")
+    rfm_parquet_path = os.path.join(output_dir, "rfm_data.parquet")
     rfm.to_parquet(rfm_parquet_path, index=False)
     
     # Save models
-    joblib.dump(scaler, os.path.join(models_dir, "scaler.pkl"))
-    joblib.dump(kmeans, os.path.join(models_dir, "kmeans.pkl"))
+    joblib.dump(scaler, os.path.join(output_dir, "scaler.pkl"))
+    joblib.dump(kmeans, os.path.join(output_dir, "kmeans.pkl"))
     print("Saved Scaler and KMeans models.")
     
     # 8. Recommendation System Approach (Item-based Collaborative Filtering)
     print("Building Item-based Collaborative Filtering matrices...")
     
-    # To save memory and time with larger datasets, let's limit product similarity computations 
-    # to top selling items, or compute on complete catalog if catalog size is reasonable.
     # Group by description and get unique customer counts
     product_counts = df.groupby('Description')['CustomerID'].nunique()
-    # If the product catalog is very large, keep the top 1000 items to avoid running out of memory.
+    # Keep the top 1000 items to avoid running out of memory.
     valid_products = product_counts.nlargest(1000).index
     df_filtered_products = df[df['Description'].isin(valid_products)]
     
@@ -158,7 +164,7 @@ def train_and_export_pipeline(data_path, models_dir="models"):
     )
     
     # Save product similarity matrix
-    similarity_path = os.path.join(models_dir, "similarity.pkl")
+    similarity_path = os.path.join(output_dir, "similarity.pkl")
     joblib.dump(product_similarity_df, similarity_path)
     print(f"Saved product similarity matrix of shape {product_similarity_df.shape} to {similarity_path}")
     
