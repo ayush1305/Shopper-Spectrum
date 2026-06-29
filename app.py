@@ -81,9 +81,7 @@ st.markdown("""
     }
     
     /* CRITICAL FIXES: Strip all backgrounds and outlines from focused or selected text blocks */
-    div[data-testid="stRadio"] div[role="radiogroup"] label *,
-    div[data-testid="stRadio"] div[role="radiogroup"] label *:focus,
-    div[data-testid="stRadio"] div[role="radiogroup"] label *:active {
+    div[data-testid="stRadio"] div[role="radiogroup"] label * {
         background: transparent !important;
         background-color: transparent !important;
         outline: none !important;
@@ -160,10 +158,38 @@ st.markdown("""
     
     /* Streamlit default tab accent line styling override */
     div[data-baseweb="tab-highlight"] {
-         background-color: #3b82f6 !important;
+        background-color: #3b82f6 !important;
     }
     
-    /* 4. Recommendation Card styling */
+    /* 4. Style all primary buttons to Blue instead of default red/orange */
+    button[data-testid="baseButton-primary"],
+    div[data-testid="stButton"] button[kind="primary"],
+    .stButton>button {
+        background-color: #3b82f6 !important;
+        color: white !important;
+        border: 1px solid #3b82f6 !important;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:hover,
+    div[data-testid="stButton"] button[kind="primary"]:hover,
+    .stButton>button:hover {
+        background-color: #1d4ed8 !important;
+        border-color: #1d4ed8 !important;
+        color: white !important;
+        box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4) !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:active,
+    div[data-testid="stButton"] button[kind="primary"]:active,
+    .stButton>button:active {
+        background-color: #1e3a8a !important;
+        border-color: #1e3a8a !important;
+        color: white !important;
+    }
+    
+    /* 5. Recommendation Card styling */
     .rec-card {
         background: rgba(15, 23, 42, 0.02);
         border-left: 5px solid #3b82f6;
@@ -201,7 +227,7 @@ st.markdown("""
         color: #2563eb;
     }
     
-    /* 5. Customer Segment result cards */
+    /* 6. Customer Segment result cards */
     .segment-card {
         border-radius: 12px;
         padding: 25px;
