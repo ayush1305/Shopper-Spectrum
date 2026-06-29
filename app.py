@@ -37,7 +37,7 @@ st.markdown("""
     .title-card h1 {
         font-size: 2.2rem;
         font-weight: 800;
-        color: #1e3a8a;
+        color: #1565c0;
         margin-bottom: 5px;
     }
     
@@ -52,65 +52,65 @@ st.markdown("""
     }
     
     button[data-baseweb="tab"]:hover {
-        color: #3b82f6 !important;
+        color: #1e88e5 !important;
     }
     
     button[data-baseweb="tab"][aria-selected="true"] {
-        color: #3b82f6 !important;
-        border-bottom-color: #3b82f6 !important;
+        color: #1565c0 !important;
+        border-bottom-color: #1565c0 !important;
     }
     
     div[data-baseweb="tab-highlight"] {
-        background-color: #3b82f6 !important;
+        background-color: #1565c0 !important;
     }
     
     /* 2. Style all primary buttons to Blue instead of default red/orange */
     button[data-testid="baseButton-primary"],
     div[data-testid="stButton"] button[kind="primary"],
     .stButton>button {
-        background-color: #3b82f6 !important;
+        background-color: #1e88e5 !important;
         color: white !important;
-        border: 1px solid #3b82f6 !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+        border: 1px solid #1e88e5 !important;
+        box-shadow: 0 4px 12px rgba(30, 136, 229, 0.2) !important;
         transition: all 0.2s ease !important;
     }
     
     button[data-testid="baseButton-primary"]:hover,
     div[data-testid="stButton"] button[kind="primary"]:hover,
     .stButton>button:hover {
-        background-color: #1d4ed8 !important;
-        border-color: #1d4ed8 !important;
+        background-color: #1565c0 !important;
+        border-color: #1565c0 !important;
         color: white !important;
-        box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4) !important;
+        box-shadow: 0 4px 16px rgba(21, 101, 192, 0.4) !important;
     }
     
     button[data-testid="baseButton-primary"]:active,
     div[data-testid="stButton"] button[kind="primary"]:active,
     .stButton>button:active {
-        background-color: #1e3a8a !important;
-        border-color: #1e3a8a !important;
+        background-color: #0d47a1 !important;
+        border-color: #0d47a1 !important;
         color: white !important;
     }
     
     /* 3. Style Sliders to Blue (Thumb and Track highlight) */
     div[data-testid="stSlider"] div[role="slider"] {
-        background-color: #3b82f6 !important;
-        border-color: #3b82f6 !important;
+        background-color: #1e88e5 !important;
+        border-color: #1e88e5 !important;
     }
     
     div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div {
-        background: #3b82f6 !important;
+        background: #1e88e5 !important;
     }
     
     /* Style slider value text to Blue */
     div[data-testid="stSlider"] div[data-baseweb="slider"] + div {
-        color: #3b82f6 !important;
+        color: #1e88e5 !important;
     }
     
     /* Recommendation Item Card */
     .rec-card {
         background: #ffffff;
-        border-left: 5px solid #3b82f6;
+        border-left: 5px solid #1e88e5;
         border-right: 1px solid rgba(15, 23, 42, 0.08);
         border-top: 1px solid rgba(15, 23, 42, 0.08);
         border-bottom: 1px solid rgba(15, 23, 42, 0.08);
@@ -142,7 +142,7 @@ st.markdown("""
     
     .rec-score {
         font-weight: bold;
-        color: #2563eb;
+        color: #1565c0;
     }
     
     /* Customer Segment Result Card */
@@ -155,18 +155,18 @@ st.markdown("""
     }
     
     .segment-high {
-        background: rgba(59, 130, 246, 0.08);
-        border-left: 6px solid #1e40af;
+        background: rgba(13, 71, 161, 0.08);
+        border-left: 6px solid #0d47a1;
     }
     
     .segment-regular {
-        background: rgba(96, 165, 250, 0.08);
-        border-left: 6px solid #3b82f6;
+        background: rgba(30, 136, 229, 0.08);
+        border-left: 6px solid #1e88e5;
     }
     
     .segment-occasional {
-        background: rgba(147, 197, 253, 0.05);
-        border-left: 6px solid #60a5fa;
+        background: rgba(100, 181, 246, 0.08);
+        border-left: 6px solid #64b5f6;
     }
     
     .segment-at-risk {
@@ -175,6 +175,9 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# Define the user's custom blue color scale
+custom_blue_scale = ["#64b5f6", "#42a5f5", "#1e88e5", "#1565c0", "#0d47a1"]
 
 # Helper function to check if models and preprocessed data exist (directly in the root directory)
 def check_assets():
@@ -275,7 +278,7 @@ if menu == "📊 Dashboard & Insights":
             col1, col2 = st.columns(2)
             
             with col1:
-                # Top Selling Products (Cohesive Blues)
+                # Top Selling Products (Custom Blue Scale)
                 st.subheader("Top 10 Best-Selling Products")
                 top_products = cleaned_df.groupby('Description')['Quantity'].sum().reset_index()
                 top_products = top_products.sort_values(by='Quantity', ascending=False).head(10)
@@ -285,7 +288,7 @@ if menu == "📊 Dashboard & Insights":
                     x='Quantity',
                     orientation='h',
                     color='Quantity',
-                    color_continuous_scale='Blues',
+                    color_continuous_scale=custom_blue_scale,
                     labels={'Quantity': 'Units Sold', 'Description': 'Product'},
                     template='plotly_white'
                 )
@@ -293,7 +296,7 @@ if menu == "📊 Dashboard & Insights":
                 st.plotly_chart(fig_products, use_container_width=True)
                 
             with col2:
-                # Country-wise Sales Volume with solid Blue color to prevent light color scaling
+                # Country-wise Sales Volume (Custom Blue Scale)
                 st.subheader("Transaction Volume by Country")
                 
                 country_sales = cleaned_df.groupby('Country')['InvoiceNo'].nunique().reset_index()
@@ -303,13 +306,12 @@ if menu == "📊 Dashboard & Insights":
                     country_sales,
                     x='Country',
                     y='InvoiceNo',
+                    color='InvoiceNo',
                     log_y=True,
+                    color_continuous_scale=custom_blue_scale,
                     labels={'InvoiceNo': 'Number of Orders'},
                     template='plotly_white'
                 )
-                
-                # Make all bars a solid, clear dark blue instead of linear white-to-blue gradient
-                fig_country.update_traces(marker_color='#2563eb', marker_line_color='#1e40af', marker_line_width=1)
                 
                 # Customize Y-axis explicitly to show custom ticks including "50"
                 fig_country.update_yaxes(
@@ -320,7 +322,7 @@ if menu == "📊 Dashboard & Insights":
                 fig_country.update_layout(margin=dict(l=10, r=10, t=10, b=10))
                 st.plotly_chart(fig_country, use_container_width=True)
                 
-            # Sales over time (Blue line)
+            # Sales over time (Custom Blue line)
             st.subheader("Monthly Sales Trend")
             cleaned_df['YearMonth'] = cleaned_df['InvoiceDate'].dt.to_period('M').astype(str)
             sales_trend = cleaned_df.groupby('YearMonth').agg({'Quantity': 'sum', 'InvoiceNo': 'nunique'}).reset_index()
@@ -332,7 +334,7 @@ if menu == "📊 Dashboard & Insights":
                 labels={'Quantity': 'Total Items Sold', 'YearMonth': 'Period'},
                 template='plotly_white'
             )
-            fig_trend.update_traces(line_color='#3b82f6', line_width=3)
+            fig_trend.update_traces(line_color='#1565c0', line_width=3) # Dark Blue
             fig_trend.update_layout(margin=dict(l=10, r=10, t=10, b=10))
             st.plotly_chart(fig_trend, use_container_width=True)
             
@@ -341,20 +343,20 @@ if menu == "📊 Dashboard & Insights":
             col_d1, col_d2, col_d3 = st.columns(3)
             
             with col_d1:
-                # Recency (Primary Blue)
-                fig_rec = px.histogram(rfm_df, x='Recency', nbins=30, color_discrete_sequence=['#3b82f6'], template='plotly_white', title="Recency (Days since last purchase)")
+                # Recency (Medium Dark Blue)
+                fig_rec = px.histogram(rfm_df, x='Recency', nbins=30, color_discrete_sequence=['#1565c0'], template='plotly_white', title="Recency (Days since last purchase)")
                 st.plotly_chart(fig_rec, use_container_width=True)
             with col_d2:
-                # Frequency (Secondary Blue)
-                fig_freq = px.histogram(rfm_df, x='Frequency', nbins=30, color_discrete_sequence=['#60a5fa'], template='plotly_white', title="Frequency (Number of orders)")
+                # Frequency (Medium Blue)
+                fig_freq = px.histogram(rfm_df, x='Frequency', nbins=30, color_discrete_sequence=['#1e88e5'], template='plotly_white', title="Frequency (Number of orders)")
                 st.plotly_chart(fig_freq, use_container_width=True)
             with col_d3:
                 # Monetary (Light Blue)
-                fig_mon = px.histogram(rfm_df, x='Monetary', nbins=30, color_discrete_sequence=['#93c5fd'], template='plotly_white', title="Monetary (Total spend)")
+                fig_mon = px.histogram(rfm_df, x='Monetary', nbins=30, color_discrete_sequence=['#64b5f6'], template='plotly_white', title="Monetary (Total spend)")
                 st.plotly_chart(fig_mon, use_container_width=True)
                 
         with tab3:
-            # 3D Plot of Clusters (Cohesive Blue-to-Gray scale)
+            # 3D Plot of Clusters (Cohesive custom blue scale)
             st.subheader("3D Interactive Visualization of Customer Clusters")
             fig_3d = px.scatter_3d(
                 rfm_df,
@@ -363,9 +365,9 @@ if menu == "📊 Dashboard & Insights":
                 z='Monetary',
                 color='Segment',
                 color_discrete_map={
-                    'High-Value': '#1e40af',    # Deep Tech Blue
-                    'Regular': '#3b82f6',       # Bright Blue
-                    'Occasional': '#60a5fa',    # Sky Blue
+                    'High-Value': '#0d47a1',    # Deep Navy Blue
+                    'Regular': '#1e88e5',       # Medium Blue
+                    'Occasional': '#64b5f6',    # Light Blue
                     'At-Risk': '#64748b'        # Slate Grey-Blue
                 },
                 hover_name='CustomerID',
@@ -549,9 +551,9 @@ elif menu == "👥 Customer Segmentation":
             if predicted_segment == 'High-Value':
                 st.markdown("""
                 <div class="segment-card segment-high">
-                    <h2 style='margin:0; color:#1e3a8a;'>👑 Segment: High-Value Customer</h2>
+                    <h2 style='margin:0; color:#0d47a1;'>👑 Segment: High-Value Customer</h2>
                     <p style='margin:10px 0; color:#1e293b;'>This customer displays high transaction frequency, large spend values, and bought from us recently.</p>
-                    <strong style="color:#1e3a8a;">💡 Marketing Strategy:</strong>
+                    <strong style="color:#0d47a1;">💡 Marketing Strategy:</strong>
                     <ul style="color:#334155;">
                         <li>Offer exclusive loyalty rewards & VIP benefits.</li>
                         <li>Give early-bird access to new products.</li>
@@ -563,9 +565,9 @@ elif menu == "👥 Customer Segmentation":
             elif predicted_segment == 'Regular':
                 st.markdown("""
                 <div class="segment-card segment-regular">
-                    <h2 style='margin:0; color:#1d4ed8;'>📈 Segment: Regular Customer</h2>
+                    <h2 style='margin:0; color:#1e88e5;'>📈 Segment: Regular Customer</h2>
                     <p style='margin:10px 0; color:#1e293b;'>This customer behaves steadily, making occasional purchases with moderate spends.</p>
-                    <strong style="color:#1d4ed8;">💡 Marketing Strategy:</strong>
+                    <strong style="color:#1e88e5;">💡 Marketing Strategy:</strong>
                     <ul style="color:#334155;">
                         <li>Cross-sell related products or offer product bundles.</li>
                         <li>Engage with standard newsletters and updates.</li>
@@ -577,9 +579,9 @@ elif menu == "👥 Customer Segmentation":
             elif predicted_segment == 'Occasional':
                 st.markdown("""
                 <div class="segment-card segment-occasional">
-                    <h2 style='margin:0; color:#0284c7;'>🌿 Segment: Occasional Customer</h2>
+                    <h2 style='margin:0; color:#64b5f6;'>🌿 Segment: Occasional Customer</h2>
                     <p style='margin:10px 0; color:#1e293b;'>This customer buys rarely, spends minor amounts, and hasn't visited recently.</p>
-                    <strong style="color:#0284c7;">💡 Marketing Strategy:</strong>
+                    <strong style="color:#64b5f6;">💡 Marketing Strategy:</strong>
                     <ul style="color:#334155;">
                         <li>Send flash-sale notifications and time-bound coupons.</li>
                         <li>Provide low-barrier discount codes (e.g. Free Shipping).</li>
