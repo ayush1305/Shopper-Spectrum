@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Clean, simple custom CSS ONLY for our custom result cards (No Streamlit widget hacks!)
+# Clean, simple custom CSS ONLY for results and elements we want blue (no radio overrides!)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -39,13 +39,51 @@ st.markdown("""
         font-weight: 800;
         color: #1e3a8a;
         margin-bottom: 5px;
-        background: none;
-        -webkit-text-fill-color: initial;
     }
     
     .title-card p {
         color: #475569 !important;
         font-weight: 400;
+    }
+    
+    /* 1. Style tabs selection indicator and text color to Blue */
+    button[data-baseweb="tab"] {
+        transition: all 0.2s ease !important;
+    }
+    
+    button[data-baseweb="tab"]:hover {
+        color: #3b82f6 !important;
+    }
+    
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #3b82f6 !important;
+        border-bottom-color: #3b82f6 !important;
+    }
+    
+    div[data-baseweb="tab-highlight"] {
+        background-color: #3b82f6 !important;
+    }
+    
+    /* 2. Style all primary buttons to Blue instead of default red/orange */
+    button[data-testid="baseButton-primary"] {
+        background-color: #3b82f6 !important;
+        color: white !important;
+        border: 1px solid #3b82f6 !important;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:hover {
+        background-color: #1d4ed8 !important;
+        border-color: #1d4ed8 !important;
+        color: white !important;
+        box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4) !important;
+    }
+    
+    button[data-testid="baseButton-primary"]:active {
+        background-color: #1e3a8a !important;
+        border-color: #1e3a8a !important;
+        color: white !important;
     }
     
     /* Recommendation Item Card */
