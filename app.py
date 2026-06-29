@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for modern Blue & White theme supporting Light/Dark modes natively
+# Clean, simple custom CSS ONLY for our custom result cards (No Streamlit widget hacks!)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -24,25 +24,23 @@ st.markdown("""
         font-family: 'Outfit', sans-serif;
     }
     
-    /* 1. Header card styling with high contrast Blue-to-Navy gradient text */
+    /* Title Card Styling */
     .title-card {
-        background: rgba(255, 255, 255, 0.7);
+        background: #f8fafc;
         border: 1px solid rgba(15, 23, 42, 0.08);
-        border-radius: 15px;
+        border-radius: 12px;
         padding: 25px;
         margin-bottom: 25px;
-        box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
     
     .title-card h1 {
         font-size: 2.2rem;
         font-weight: 800;
-        background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #1e3a8a;
         margin-bottom: 5px;
+        background: none;
+        -webkit-text-fill-color: initial;
     }
     
     .title-card p {
@@ -50,162 +48,23 @@ st.markdown("""
         font-weight: 400;
     }
     
-    /* 2. Custom Radio Button Slicer styling (Sidebar Navigation) */
-    div[data-testid="stRadio"] {
-        /* Force Streamlit CSS theme variables to Blue for this widget */
-        --primary-color: #3b82f6 !important;
-        --primary: #3b82f6 !important;
-    }
-    
-    div[data-testid="stRadio"] div[role="radiogroup"] {
-        gap: 4px !important;
-    }
-    
-    div[data-testid="stRadio"] div[role="radiogroup"] > label {
-        display: flex !important;
-        align-items: center !important;
-        padding: 10px 16px !important;
-        border-radius: 8px !important;
-        margin-bottom: 6px !important;
-        transition: all 0.2s ease !important;
-        cursor: pointer !important;
-        width: 100% !important;
-        border-left: 4px solid transparent !important;
-        background-color: transparent !important;
-        
-        /* Prevent browser selection styling on click */
-        user-select: none !important;
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-    }
-    
-    /* CRITICAL FIXES: Strip all backgrounds and outlines from focused or selected text blocks */
-    div[data-testid="stRadio"] div[role="radiogroup"] label * {
-        background: transparent !important;
-        background-color: transparent !important;
-        outline: none !important;
-        box-shadow: none !important;
-    }
-    
-    /* Eliminate text selection blue highlight color on click */
-    div[data-testid="stRadio"] label::selection,
-    div[data-testid="stRadio"] label *::selection,
-    div[data-testid="stRadio"] label::-moz-selection,
-    div[data-testid="stRadio"] label *::-moz-selection {
-        background: transparent !important;
-        background-color: transparent !important;
-        color: inherit !important;
-    }
-    
-    /* Radio option Hover style: Soft blue capsule background, text turns blue */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover {
-        background-color: rgba(59, 130, 246, 0.05) !important;
-    }
-    
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:hover p {
-        color: #3b82f6 !important;
-    }
-    
-    /* Radio option Selected/Active style: Light blue capsule background with blue left border, text turns blue */
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) {
-        background-color: rgba(59, 130, 246, 0.1) !important;
-        border-left: 4px solid #3b82f6 !important;
-    }
-    
-    div[data-testid="stRadio"] div[role="radiogroup"] > label:has(input:checked) p {
-        color: #1d4ed8 !important;
-        font-weight: 600 !important;
-        background: transparent !important;
-        background-color: transparent !important;
-    }
-    
-    /* BULLETPROOF RADIO DOT STYLING: Override checkmark colors regardless of whether Streamlit uses divs or spans */
-    div[data-testid="stRadio"] input[type="radio"]:checked + * {
-        border-color: #3b82f6 !important;
-        background-color: transparent !important;
-    }
-    
-    div[data-testid="stRadio"] input[type="radio"]:checked + * > * {
-        background-color: #3b82f6 !important;
-    }
-    
-    /* Alternative BaseWeb selector targets to ensure the circle and checkmark are blue */
-    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + * {
-        border-color: #3b82f6 !important;
-        background-color: transparent !important;
-    }
-    
-    div[data-testid="stRadio"] [role="radiogroup"] label input[type="radio"]:checked + * > * {
-        background-color: #3b82f6 !important;
-    }
-    
-    /* 3. Style Tab line selection indicator to Blue */
-    button[data-baseweb="tab"] {
-        color: #64748b !important;
-        border-bottom: 2px solid transparent !important;
-        transition: all 0.2s ease !important;
-    }
-    
-    button[data-baseweb="tab"]:hover {
-        color: #3b82f6 !important;
-    }
-    
-    button[data-baseweb="tab"][aria-selected="true"] {
-        color: #3b82f6 !important;
-        border-bottom: 2px solid #3b82f6 !important;
-    }
-    
-    /* Streamlit default tab accent line styling override */
-    div[data-baseweb="tab-highlight"] {
-        background-color: #3b82f6 !important;
-    }
-    
-    /* 4. Style all primary buttons to Blue instead of default red/orange */
-    button[data-testid="baseButton-primary"],
-    div[data-testid="stButton"] button[kind="primary"],
-    .stButton>button {
-        background-color: #3b82f6 !important;
-        color: white !important;
-        border: 1px solid #3b82f6 !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
-        transition: all 0.2s ease !important;
-    }
-    
-    button[data-testid="baseButton-primary"]:hover,
-    div[data-testid="stButton"] button[kind="primary"]:hover,
-    .stButton>button:hover {
-        background-color: #1d4ed8 !important;
-        border-color: #1d4ed8 !important;
-        color: white !important;
-        box-shadow: 0 4px 16px rgba(29, 78, 216, 0.4) !important;
-    }
-    
-    button[data-testid="baseButton-primary"]:active,
-    div[data-testid="stButton"] button[kind="primary"]:active,
-    .stButton>button:active {
-        background-color: #1e3a8a !important;
-        border-color: #1e3a8a !important;
-        color: white !important;
-    }
-    
-    /* 5. Recommendation Card styling */
+    /* Recommendation Item Card */
     .rec-card {
-        background: rgba(15, 23, 42, 0.02);
+        background: #ffffff;
         border-left: 5px solid #3b82f6;
-        border-right: 1px solid rgba(15, 23, 42, 0.05);
-        border-top: 1px solid rgba(15, 23, 42, 0.05);
-        border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+        border-right: 1px solid rgba(15, 23, 42, 0.08);
+        border-top: 1px solid rgba(15, 23, 42, 0.08);
+        border-bottom: 1px solid rgba(15, 23, 42, 0.08);
         border-radius: 8px;
         padding: 15px 20px;
         margin-bottom: 12px;
         transition: transform 0.2s, background-color 0.2s;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
     
     .rec-card:hover {
-        transform: translateX(5px);
-        background: rgba(59, 130, 246, 0.05);
+        transform: translateX(4px);
+        background: #f8fafc;
     }
     
     .rec-title {
@@ -227,32 +86,32 @@ st.markdown("""
         color: #2563eb;
     }
     
-    /* 6. Customer Segment result cards */
+    /* Customer Segment Result Card */
     .segment-card {
         border-radius: 12px;
         padding: 25px;
         margin-top: 20px;
         border: 1px solid rgba(15, 23, 42, 0.08);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     }
     
     .segment-high {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(96, 165, 250, 0.1) 100%);
+        background: rgba(59, 130, 246, 0.08);
         border-left: 6px solid #1e40af;
     }
     
     .segment-regular {
-        background: linear-gradient(135deg, rgba(96, 165, 250, 0.08) 0%, rgba(147, 197, 253, 0.08) 100%);
+        background: rgba(96, 165, 250, 0.08);
         border-left: 6px solid #3b82f6;
     }
     
     .segment-occasional {
-        background: linear-gradient(135deg, rgba(147, 197, 253, 0.05) 0%, rgba(191, 219, 254, 0.05) 100%);
+        background: rgba(147, 197, 253, 0.05);
         border-left: 6px solid #60a5fa;
     }
     
     .segment-at-risk {
-        background: linear-gradient(135deg, rgba(100, 116, 139, 0.08) 0%, rgba(148, 163, 184, 0.08) 100%);
+        background: rgba(100, 116, 139, 0.08);
         border-left: 6px solid #64748b;
     }
 </style>
@@ -274,7 +133,7 @@ st.sidebar.markdown("<h2 style='text-align: center; color: #0f172a;'>🛒 Shoppe
 st.sidebar.markdown("<p style='text-align: center; color:#475569; font-size:0.9rem;'>Customer Segmentation & Product Recommendations</p>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 
-# Main Navigation
+# Main Navigation (Uses native Streamlit styling configured via config.toml)
 menu = st.sidebar.radio(
     "Navigation Menu",
     ["📊 Dashboard & Insights", "🛒 Product Recommendations", "👥 Customer Segmentation", "⚙️ Data & Model Control"]
