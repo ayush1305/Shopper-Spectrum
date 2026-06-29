@@ -86,6 +86,28 @@ st.markdown("""
         color: white !important;
     }
     
+    /* 3. Style Streamlit Sliders to Blue (Thumb and Track highlight) */
+    div[data-testid="stSlider"] div[role="slider"] {
+        background-color: #3b82f6 !important;
+        border-color: #3b82f6 !important;
+    }
+    
+    div[data-testid="stSlider"] div[data-baseweb="slider"] > div > div {
+        background: #3b82f6 !important;
+    }
+    
+    /* Style slider value text to Blue */
+    div[data-testid="stSlider"] div[data-baseweb="slider"] + div {
+        color: #3b82f6 !important;
+    }
+    
+    /* 4. Style input focus borders to blue */
+    div[data-testid="stNumberInput"] input:focus,
+    div[data-testid="stSelectbox"] div[data-baseweb="select"] > div:focus-within {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 1px #3b82f6 !important;
+    }
+    
     /* Recommendation Item Card */
     .rec-card {
         background: #ffffff;
